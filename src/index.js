@@ -1,3 +1,5 @@
+const { subset } = require("semver");
+
 const MORSE_TABLE = {
     '.-':     'a',
     '-...':   'b',
@@ -37,8 +39,32 @@ const MORSE_TABLE = {
     '-----':  '0',
 };
 
+function decodeFromBinaryToMorse(expr) {
+    expr = ''+expr;
+    let exprstr = '';
+    for (let ind = 0; ind < expr.length; ind = ind+2) {   
+        if (expr.slice(ind,ind+2) == '**') {
+            return ' ';
+        }
+         if (expr.slice(ind,ind+2) == 10) {
+            exprstr = exprstr+'.';
+         }
+         if (expr.slice(ind,ind+2) == 11){
+            exprstr = exprstr+'-';    
+         }    
+    }
+    return MORSE_TABLE[exprstr];
+}
+
 function decode(expr) {
-    // write your solution here
+    let exprstr = '';
+    let letter = '';
+    for (let index = 0; index < expr.length; index = index+10) {
+        letter = decodeFromBinaryToMorse(expr.slice(index,index+10));
+        exprstr = exprstr + letter;  
+    }
+
+    return exprstr;
 }
 
 module.exports = {
